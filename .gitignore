@@ -1,2 +1,16 @@
 # windsurf rules
 .windsurfrules
+
+# allure results
+allure-results
+
+# build artifacts
+target/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+
+# test results
+allure-results/
