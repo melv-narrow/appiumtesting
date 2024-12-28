@@ -1,9 +1,6 @@
 # windsurf rules
 .windsurfrules
 
-# allure results
-allure-results
-
 # build artifacts
 target/
 
