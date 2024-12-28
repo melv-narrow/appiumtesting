@@ -33,62 +33,94 @@ Welcome to my Appium test automation learning repository! This project represent
 ```
 udemy-appium/
 ├── src/
-│   ├── test/
+│   ├── main/
 │   │   ├── java/
-│   │   │   ├── BaseTest.java         # Test configuration and setup
-│   │   │   ├── AlertDialogsTest.java # Alert handling tests
-│   │   │   ├── DragAndDropTest.java  # Gesture tests
-│   │   │   ├── eCommerceTests.java   # E-commerce app tests
-│   │   │   └── ...
-│   │   └── resources/
-│   └── main/
-│       └── resources/                 # Test apps and configurations
+│   │   │   ├── pageobjects/           # Page Object Model classes
+│   │   │   │   ├── FormPage.java      # Form page interactions
+│   │   │   │   ├── ProductPage.java   # Product listing page
+│   │   │   │   └── CartPage.java      # Shopping cart operations
+│   │   │   └── utils/
+│   │   │       └── AndroidActions.java # Common Android gestures
+│   │   └── resources/                 # Test apps and configurations
+│   └── test/
+│       └── java/
+│           ├── BaseTest.java          # Test configuration and setup
+│           └── eCommerceTests.java    # E-commerce app tests
 ├── pom.xml                           # Maven dependencies
 └── README.md
 ```
 
-## 🛠️ Test Highlights
+## 🌟 Key Features
 
-- **E-commerce Flow Tests**: End-to-end testing of shopping cart functionality
-- **Gesture Tests**: Advanced mobile interactions like swipe, scroll, and drag-and-drop
-- **Browser Tests**: Cross-browser testing capabilities
-- **Alert Handling**: Testing different types of mobile alerts and popups
+### Page Object Model
+- Organized test structure using Page Object Model
+- Separate classes for different app screens
+- Encapsulated UI elements and actions
+- Improved test maintenance and readability
 
-## 🌱 Learning Resources
+### Utility Layer
+- Common Android gestures in `AndroidActions` class
+- Reusable methods across page objects
+- Standardized wait conditions
+- Error handling mechanisms
 
-This project is part of my learning journey through:
-- Udemy Appium courses
-- Official Appium documentation
-- Mobile testing best practices
-- Test automation design patterns
+### Test Structure
+- Base test class with driver initialization
+- TestNG annotations for test lifecycle
+- Descriptive test methods
+- Clear assertions with messages
 
-## 🔄 Current Progress
+## 🧪 Test Cases
 
-- ✅ Basic framework setup
-- ✅ TestNG integration
-- ✅ Allure reporting
-- ✅ Basic mobile gestures
-- ✅ Alert handling
-- 🚧 Advanced gestures (In Progress)
-- 🚧 Cross-platform tests (In Progress)
-- 📋 CI/CD integration (Planned)
+### E-commerce App Tests
+1. Form Validation
+   - Verify form submission with valid data
+   - Validate error message for missing name
 
-## 🎓 Key Takeaways
+2. Product Operations
+   - Add products to cart
+   - Verify product details
+   - Calculate and verify total amounts
 
-1. Understanding mobile app architecture
-2. Importance of stable test automation
-3. Best practices in test framework design
-4. Handling different mobile platforms
-5. Real-world testing scenarios
+3. Checkout Process
+   - Terms and conditions handling
+   - Payment flow verification
+   - Order confirmation
 
-## 🔮 Future Plans
+## 🚀 Getting Started
 
-- Implement CI/CD pipeline
-- Add more complex test scenarios
-- Explore cloud testing platforms
-- Performance testing integration
-- Enhanced reporting features
+1. Prerequisites:
+   - Java JDK 8 or higher
+   - Appium Server
+   - Android SDK
+   - Maven
 
----
+2. Setup:
+   ```bash
+   git clone <repository-url>
+   cd udemy-appium
+   mvn clean install
+   ```
 
-> 🌟 *This repository documents my learning journey. While I'm still learning, each commit represents progress in mastering mobile test automation.*
+3. Run Tests:
+   ```bash
+   mvn test
+   ```
+
+## 📈 Future Improvements
+
+- [ ] Implement iOS test capabilities
+- [ ] Add parallel test execution
+- [ ] Enhance reporting with screenshots
+- [ ] Add CI/CD pipeline integration
+- [ ] Implement test data management
+
+## 📝 Notes
+
+- Make sure Appium server is running before executing tests
+- Android emulator or real device should be connected
+- Update device capabilities in `BaseTest.java` as needed
+
+## 🤝 Contributing
+
+Feel free to fork this repository and submit pull requests. All contributions are welcome!
