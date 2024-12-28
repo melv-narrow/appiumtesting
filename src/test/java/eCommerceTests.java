@@ -26,9 +26,8 @@ public class eCommerceTests extends BaseTest {
     public void ScrollToAddProductToCart() throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
         formPage.selectCountry("Brazil");
-        formPage.fillForm("Melvin", "");
-
-        ProductPage productPage = formPage.fillForm("Melvin", "female");
+        ProductPage productPage = formPage.fillForm("Melvin", "");
+        
         productPage.scrollToAddProductToCart("Jordan 6 Rings");
         productPage.addProductToCart("Jordan 6 Rings");
         CartPage cartPage = productPage.goToCart();
