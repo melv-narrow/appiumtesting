@@ -72,14 +72,13 @@ public class FormPage extends AndroidActions {
         return new ProductPage(driver);
     }
 
-    public ProductPage fillFormWithoutName(String gender) {
+    public void fillFormWithoutName(String gender) {
         if (gender.contains("female")) {
             radioFemale.click();
         } else {
             radioMale.click();
         }
         btnLetsShop.click();
-        return new ProductPage(driver);
     }
 
     public String getToastMessage() {

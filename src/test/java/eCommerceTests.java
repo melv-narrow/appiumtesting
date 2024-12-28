@@ -1,4 +1,5 @@
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import pageobjects.CartPage;
@@ -6,27 +7,27 @@ import pageobjects.ProductPage;
 
 public class eCommerceTests extends BaseTest {
     
-    @Test
-    public void FillForm() throws InterruptedException {
+    @Test(dataProvider = "getFormData")
+    public void FillForm(String name, String gender, String country) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
-        formPage.selectCountry("Brazil");
-        formPage.fillForm("Melvin", "");
+        formPage.selectCountry(country);
+        formPage.fillForm(name, gender);
     }
 
-    @Test
-    public void FillFormWithoutName() throws InterruptedException {
+    @Test(dataProvider = "getFormWithoutNameData")
+    public void FillFormWithoutName(String gender, String country) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
-        formPage.selectCountry("Argentina");
-        formPage.fillFormWithoutName("female");
+        formPage.selectCountry(country);
+        formPage.fillFormWithoutName(gender);
         String toastText = formPage.getToastMessage();
         Assert.assertEquals(toastText, "Please enter your name");
     }
 
-    @Test
-    public void ScrollToAddProductToCart() throws InterruptedException {
+    @Test(dataProvider = "getFormData")
+    public void ScrollToAddProductToCart(String name, String gender, String country) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
-        formPage.selectCountry("Brazil");
-        ProductPage productPage = formPage.fillForm("Melvin", "");
+        formPage.selectCountry(country);
+        ProductPage productPage = formPage.fillForm(name, gender);
         
         productPage.scrollToAddProductToCart("Jordan 6 Rings");
         productPage.addProductToCart("Jordan 6 Rings");
@@ -37,12 +38,12 @@ public class eCommerceTests extends BaseTest {
         Assert.assertEquals(productName, "Jordan 6 Rings");
     }
 
-    @Test
-    public void SumOfProductsInCart() throws InterruptedException {
+    @Test(dataProvider = "getFormData")
+    public void SumOfProductsInCart(String name, String gender, String country) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
-        formPage.selectCountry("Australia");
+        formPage.selectCountry(country);
 
-        ProductPage productPage = formPage.fillForm("Melvin", "female");
+        ProductPage productPage = formPage.fillForm(name, gender);
         productPage.addProductsToCart("Air Jordan 9 Retro", "Jordan 6 Rings");
 
         CartPage cartPage = productPage.goToCart();
@@ -55,16 +56,15 @@ public class eCommerceTests extends BaseTest {
         cartPage.closeAlert();
         cartPage.acceptTermsAndConditions();
         cartPage.goToCheckout();
-
         Thread.sleep(6000);
     }
 
-    @Test
-    public void PurchaseProductHybrid() throws InterruptedException {
+    @Test(dataProvider = "getFormData")
+    public void PurchaseProductHybrid(String name, String gender, String country) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
-        formPage.selectCountry("Austria");
+        formPage.selectCountry(country);
 
-        ProductPage productPage = formPage.fillForm("Melvin", "female");
+        ProductPage productPage = formPage.fillForm(name, gender);
         productPage.addProductsToCart("Air Jordan 9 Retro", "Jordan 6 Rings");
 
         CartPage cartPage = productPage.goToCart();
@@ -83,5 +83,24 @@ public class eCommerceTests extends BaseTest {
         // WebElement searchField = driver.findElement(By.name("q"));
         // Assert.assertTrue(searchField.isDisplayed());
         // driver.context("NATIVE_APP");
+    }
+
+    @DataProvider
+    public Object[][] getFormData() {
+        return new Object[][] {
+            { "Melvin", "male", "Brazil" },
+            { "Melvin", "female", "Argentina" },
+            { "Melvin", "", "Australia" },
+            { "Melvin", "female", "Austria" },
+            { "Melvin", "female", "Brazil" }
+        };
+    }
+
+    @DataProvider
+    public Object[][] getFormWithoutNameData() {
+        return new Object[][] {
+            { "female", "Argentina" },
+            { "male", "Brazil" }
+        };
     }
 }
