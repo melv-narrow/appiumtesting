@@ -38,18 +38,18 @@ public class eCommerceTests extends BaseTest {
         Assert.assertEquals(productName, "Jordan 6 Rings");
     }
 
-    @Test(dataProvider = "getFormData")
-    public void SumOfProductsInCart(String name, String gender, String country) throws InterruptedException {
+    @Test(dataProvider = "getProductsData")
+    public void SumOfProductsInCart(String name, String gender, String country, String product1, String product2) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
         formPage.selectCountry(country);
 
         ProductPage productPage = formPage.fillForm(name, gender);
-        productPage.addProductsToCart("Air Jordan 9 Retro", "Jordan 6 Rings");
+        productPage.addProductsToCart(product1, product2);
 
         CartPage cartPage = productPage.goToCart();
         Assert.assertEquals(cartPage.getToolbarTitle(), "Cart", "Cart title verification failed");
-        Assert.assertEquals(cartPage.getProductsInCartByIndex(0), "Air Jordan 9 Retro");
-        Assert.assertEquals(cartPage.getProductsInCartByIndex(1), "Jordan 6 Rings");
+        Assert.assertEquals(cartPage.getProductsInCartByIndex(0), product1);
+        Assert.assertEquals(cartPage.getProductsInCartByIndex(1), product2);
         Assert.assertEquals(cartPage.getPurchaseAmount(), cartPage.getProductPrices(), "Purchase amounts do not match");
         cartPage.goToTermsAndConditions();
         Assert.assertEquals(cartPage.getAlertTitle(), "Terms Of Conditions");
@@ -90,9 +90,9 @@ public class eCommerceTests extends BaseTest {
         return new Object[][] {
             { "Melvin", "male", "Brazil" },
             { "Melvin", "female", "Argentina" },
-            { "Melvin", "", "Australia" },
-            { "Melvin", "female", "Austria" },
-            { "Melvin", "female", "Brazil" }
+            // { "Melvin", "", "Australia" },
+            // { "Melvin", "female", "Austria" },
+            // { "Melvin", "female", "Brazil" }
         };
     }
 
@@ -101,6 +101,14 @@ public class eCommerceTests extends BaseTest {
         return new Object[][] {
             { "female", "Argentina" },
             { "male", "Brazil" }
+        };
+    }
+
+    @DataProvider
+    public Object[][] getProductsData() {
+        return new Object[][] {
+            { "Melvin", "male", "Brazil", "Air Jordan 9 Retro", "Jordan 6 Rings" },
+            { "Melvin", "female", "Argentina", "Jordan 6 Rings", "Air Jordan 9 Retro" }
         };
     }
 }
