@@ -1,20 +1,20 @@
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import pageobjects.CartPage;
 import pageobjects.ProductPage;
+import testdata.TestData;
 
 public class eCommerceTests extends BaseTest {
     
-    @Test(dataProvider = "getFormData")
+    @Test(dataProvider = "getFormData", dataProviderClass = TestData.class)
     public void FillForm(String name, String gender, String country) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
         formPage.selectCountry(country);
         formPage.fillForm(name, gender);
     }
 
-    @Test(dataProvider = "getFormWithoutNameData")
+    @Test(dataProvider = "getFormWithoutNameData", dataProviderClass = TestData.class)
     public void FillFormWithoutName(String gender, String country) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
         formPage.selectCountry(country);
@@ -23,7 +23,7 @@ public class eCommerceTests extends BaseTest {
         Assert.assertEquals(toastText, "Please enter your name");
     }
 
-    @Test(dataProvider = "getFormData")
+    @Test(dataProvider = "getFormData", dataProviderClass = TestData.class)
     public void ScrollToAddProductToCart(String name, String gender, String country) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
         formPage.selectCountry(country);
@@ -38,7 +38,7 @@ public class eCommerceTests extends BaseTest {
         Assert.assertEquals(productName, "Jordan 6 Rings");
     }
 
-    @Test(dataProvider = "getProductsData")
+    @Test(dataProvider = "getProductsData", dataProviderClass = TestData.class)
     public void SumOfProductsInCart(String name, String gender, String country, String product1, String product2) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
         formPage.selectCountry(country);
@@ -59,7 +59,7 @@ public class eCommerceTests extends BaseTest {
         Thread.sleep(6000);
     }
 
-    @Test(dataProvider = "getFormData")
+    @Test(dataProvider = "getProductsData", dataProviderClass = TestData.class)
     public void PurchaseProductHybrid(String name, String gender, String country) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
         formPage.selectCountry(country);
@@ -83,32 +83,5 @@ public class eCommerceTests extends BaseTest {
         // WebElement searchField = driver.findElement(By.name("q"));
         // Assert.assertTrue(searchField.isDisplayed());
         // driver.context("NATIVE_APP");
-    }
-
-    @DataProvider
-    public Object[][] getFormData() {
-        return new Object[][] {
-            { "Melvin", "male", "Brazil" },
-            { "Melvin", "female", "Argentina" },
-            // { "Melvin", "", "Australia" },
-            // { "Melvin", "female", "Austria" },
-            // { "Melvin", "female", "Brazil" }
-        };
-    }
-
-    @DataProvider
-    public Object[][] getFormWithoutNameData() {
-        return new Object[][] {
-            { "female", "Argentina" },
-            { "male", "Brazil" }
-        };
-    }
-
-    @DataProvider
-    public Object[][] getProductsData() {
-        return new Object[][] {
-            { "Melvin", "male", "Brazil", "Air Jordan 9 Retro", "Jordan 6 Rings" },
-            { "Melvin", "female", "Argentina", "Jordan 6 Rings", "Air Jordan 9 Retro" }
-        };
     }
 }
