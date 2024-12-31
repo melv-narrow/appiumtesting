@@ -46,9 +46,12 @@ public class BaseTest {
     @BeforeClass(alwaysRun = true)
     public void startAppiumService() {
         // Start Appium server programmatically
-        service = new AppiumServiceBuilder().withAppiumJS(new File("C:\\Users\\melvi\\AppData\\Roaming\\npm\\node_modules\\appium\\build\\lib\\main.js"))
+        service = new AppiumServiceBuilder()
+            .withAppiumJS(new File("C:\\Users\\melvi\\AppData\\Roaming\\npm\\node_modules\\appium\\build\\lib\\main.js"))
             .withIPAddress(prop.getProperty("ipAddress"))
             .usingPort(Integer.parseInt(prop.getProperty("port")))
+            .withArgument(() -> "--use-plugins", "execute-driver")
+            .withArgument(() -> "--allow-insecure", "chromedriver_autodownload")
             .build();
         service.start();
     }
@@ -143,17 +146,15 @@ public class BaseTest {
     }
 
     @AfterMethod(alwaysRun = true)
-    public void tearDown() throws InterruptedException {
+    public void tearDown() {
         if (driver != null) {
-            Thread.sleep(5000);
             driver.quit();
         }
     }
 
     @AfterClass(alwaysRun = true)
-    public void stopAppiumService() throws InterruptedException {
+    public void stopAppiumService() {
         if (service != null) {
-            Thread.sleep(5000);
             service.stop();
         }
     }
