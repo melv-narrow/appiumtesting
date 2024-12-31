@@ -11,3 +11,4 @@ target/
 
 # test results
 allure-results/
+node_modules
