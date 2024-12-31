@@ -1,0 +1,33 @@
+# Browserstack Configuration
+userName: "melvinmpolokeng_D3IbRG"
+accessKey: "MdvBsqYu5sRHDg3fp3pW"
+
+# Project Configuration
+projectName: "Appium Android Project"
+buildName: "browserstack-build-1"
+
+# App Configuration
+framework: "testng"
+app: "bs://2b41182cd53336130b04be1cd4f90cb8b4b63642"
+
+# Test Configuration
+platforms:
+  - deviceName: Samsung Galaxy S22 Ultra
+    osVersion: 12.0
+    platformName: android
+  - deviceName: Samsung Galaxy S21
+    osVersion: 11.0
+    platformName: android
+  - deviceName: Google Pixel 6 Pro
+    osVersion: 12.0
+    platformName: android
+parallelsPerPlatform: 2
+browserStackLocal: true
+buildName: appium-tests
+buildIdentifier: ${BUILD_NUMBER}
+projectName: Appium Test Framework
+testObservability: true
+debug: true
+networkLogs: true
+percy: false
+percyCaptureMode: auto

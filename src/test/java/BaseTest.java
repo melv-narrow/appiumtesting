@@ -1,8 +1,10 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Properties;
 
 import org.openqa.selenium.JavascriptExecutor;
@@ -23,8 +25,6 @@ import io.appium.java_client.android.options.UiAutomator2Options;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import pageobjects.FormPage;
-
-import java.net.MalformedURLException;
 
 public class BaseTest {
     public AndroidDriver driver;
@@ -59,11 +59,28 @@ public class BaseTest {
     @BeforeMethod(alwaysRun = true)
     public void configureAppium() throws MalformedURLException {
         UiAutomator2Options options = new UiAutomator2Options();
-        options.setDeviceName(prop.getProperty("deviceName"));
-        options.setChromedriverExecutable("C:\\Users\\melvi\\Coding Projects\\udemy-appium\\chromedriver_win32\\chromedriver.exe");
-        options.setApp("C:\\Users\\melvi\\Coding Projects\\udemy-appium\\udemy-appium\\src\\main\\resources\\General-Store.apk");
         
-        driver = new AndroidDriver(new URL("http://" + prop.getProperty("ipAddress") + ":" + prop.getProperty("port")), options);
+        // BrowserStack configuration
+        HashMap<String, Object> browserstackOptions = new HashMap<String, Object>();
+        browserstackOptions.put("userName", "melvinmpolokeng_D3IbRG");
+        browserstackOptions.put("accessKey", "MdvBsqYu5sRHDg3fp3pW");
+        browserstackOptions.put("projectName", "Appium Android Project");
+        browserstackOptions.put("buildName", "BrowserStack Build " + System.currentTimeMillis());
+        browserstackOptions.put("sessionName", "Appium Test");
+        browserstackOptions.put("local", "false");
+        options.setCapability("bstack:options", browserstackOptions);
+        
+        // App and device configuration
+        options.setCapability("platformName", "android");
+        options.setCapability("platformVersion", "12.0");
+        options.setCapability("deviceName", "Samsung Galaxy S22 Ultra");
+        options.setCapability("app", "bs://2b41182cd53336130b04be1cd4f90cb8b4b63642");
+        
+        String username = "melvinmpolokeng_D3IbRG";
+        String accessKey = "MdvBsqYu5sRHDg3fp3pW";
+        String browserStackUrl = "https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub";
+        
+        driver = new AndroidDriver(new URL(browserStackUrl), options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         formPage = new FormPage(driver);
     }
