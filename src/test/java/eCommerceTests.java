@@ -12,7 +12,7 @@ import testdata.TestData;
 @Feature("Login and Product Purchase Flow")
 public class eCommerceTests extends BaseTest {
     
-    @Test(dataProvider = "getFormData", dataProviderClass = TestData.class)
+    @Test(dataProvider = "getFormData", dataProviderClass = TestData.class, groups = { "Positive Tests" })
     @Story("Form Submission")
     public void FillForm(String name, String gender, String country) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
@@ -20,7 +20,7 @@ public class eCommerceTests extends BaseTest {
         formPage.fillForm(name, gender);
     }
 
-    @Test(dataProvider = "getFormWithoutNameData", dataProviderClass = TestData.class)
+    @Test(dataProvider = "getFormWithoutNameData", dataProviderClass = TestData.class, groups = { "Negative Tests" })
     @Story("Form Submission wihtout a Name. Validation Test")
     public void FillFormWithoutName(String gender, String country) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
@@ -30,7 +30,7 @@ public class eCommerceTests extends BaseTest {
         Assert.assertEquals(toastText, "Please enter your name");
     }
 
-    @Test(dataProvider = "getFormData", dataProviderClass = TestData.class)
+    @Test(dataProvider = "getFormData", dataProviderClass = TestData.class, groups = { "Positive Tests" })
     @Story("Scroll to a product and add the product to Cart")
     public void ScrollToAddProductToCart(String name, String gender, String country) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
@@ -46,7 +46,7 @@ public class eCommerceTests extends BaseTest {
         Assert.assertEquals(productName, "Jordan 6 Rings");
     }
 
-    @Test(dataProvider = "getProductsData", dataProviderClass = TestData.class)
+    @Test(dataProvider = "getProductsData", dataProviderClass = TestData.class, groups = { "Positive Tests" })
     @Story("Add multiple products to Cart and check against the total cart amount")
     public void SumOfProductsInCart(String name, String gender, String country, String product1, String product2) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
@@ -68,7 +68,7 @@ public class eCommerceTests extends BaseTest {
         Thread.sleep(6000);
     }
 
-    @Test(dataProvider = "getProductsData", dataProviderClass = TestData.class)
+    @Test(dataProvider = "getProductsData", dataProviderClass = TestData.class, groups = { "Positive Tests" })
     @Story("Add multiple products to Cart and check against the total cart amount")
     public void PurchaseProductHybrid(String name, String gender, String country, String product1, String product2) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");

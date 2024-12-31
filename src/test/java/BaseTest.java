@@ -43,7 +43,7 @@ public class BaseTest {
         }
     }
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     public void startAppiumService() {
         // Start Appium server programmatically
         service = new AppiumServiceBuilder().withAppiumJS(new File("C:\\Users\\melvi\\AppData\\Roaming\\npm\\node_modules\\appium\\build\\lib\\main.js"))
@@ -53,7 +53,7 @@ public class BaseTest {
         service.start();
     }
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void configureAppium() throws MalformedURLException {
         UiAutomator2Options options = new UiAutomator2Options();
         options.setDeviceName(prop.getProperty("deviceName"));
@@ -142,7 +142,7 @@ public class BaseTest {
         ));
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void tearDown() throws InterruptedException {
         if (driver != null) {
             Thread.sleep(5000);
@@ -150,7 +150,7 @@ public class BaseTest {
         }
     }
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     public void stopAppiumService() throws InterruptedException {
         if (service != null) {
             Thread.sleep(5000);
