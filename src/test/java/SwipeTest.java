@@ -23,12 +23,12 @@ public class SwipeTest extends BaseTest {
         driver.findElement(AppiumBy.accessibilityId("Gallery")).click();
         driver.findElement(AppiumBy.accessibilityId("1. Photos")).click();
         WebElement firstImage = driver.findElement(By.xpath("//android.widget.ImageView[1]"));
-        String isFocusable = firstImage.getAttribute("focusable");
+        String isFocusable = firstImage.getDomAttribute("focusable");
         Assert.assertEquals(isFocusable, "true");
 
         //Swipe gesture
         swipeGesture(firstImage, "left");
-        isFocusable = firstImage.getAttribute("focusable");
+        isFocusable = firstImage.getDomAttribute("focusable");
         Assert.assertEquals(isFocusable, "false");
     }
 }

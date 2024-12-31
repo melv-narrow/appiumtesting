@@ -1,34 +1,42 @@
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import pageobjects.CartPage;
 import pageobjects.ProductPage;
+import testdata.TestData;
 
+@Epic("eCommerce Tests")
+@Feature("Login and Product Purchase Flow")
 public class eCommerceTests extends BaseTest {
     
-    @Test
-    public void FillForm() throws InterruptedException {
+    @Test(dataProvider = "getFormData", dataProviderClass = TestData.class)
+    @Story("Form Submission")
+    public void FillForm(String name, String gender, String country) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
-        formPage.selectCountry("Brazil");
-        formPage.fillForm("Melvin", "");
+        formPage.selectCountry(country);
+        formPage.fillForm(name, gender);
     }
 
-    @Test
-    public void FillFormWithoutName() throws InterruptedException {
+    @Test(dataProvider = "getFormWithoutNameData", dataProviderClass = TestData.class)
+    @Story("Form Submission wihtout a Name. Validation Test")
+    public void FillFormWithoutName(String gender, String country) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
-        formPage.selectCountry("Argentina");
-        formPage.fillFormWithoutName("female");
+        formPage.selectCountry(country);
+        formPage.fillFormWithoutName(gender);
         String toastText = formPage.getToastMessage();
         Assert.assertEquals(toastText, "Please enter your name");
     }
 
-    @Test
-    public void ScrollToAddProductToCart() throws InterruptedException {
+    @Test(dataProvider = "getFormData", dataProviderClass = TestData.class)
+    @Story("Scroll to a product and add the product to Cart")
+    public void ScrollToAddProductToCart(String name, String gender, String country) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
-        formPage.selectCountry("Brazil");
-        formPage.fillForm("Melvin", "");
-
-        ProductPage productPage = formPage.fillForm("Melvin", "female");
+        formPage.selectCountry(country);
+        ProductPage productPage = formPage.fillForm(name, gender);
+        
         productPage.scrollToAddProductToCart("Jordan 6 Rings");
         productPage.addProductToCart("Jordan 6 Rings");
         CartPage cartPage = productPage.goToCart();
@@ -38,34 +46,35 @@ public class eCommerceTests extends BaseTest {
         Assert.assertEquals(productName, "Jordan 6 Rings");
     }
 
-    @Test
-    public void SumOfProductsInCart() throws InterruptedException {
+    @Test(dataProvider = "getProductsData", dataProviderClass = TestData.class)
+    @Story("Add multiple products to Cart and check against the total cart amount")
+    public void SumOfProductsInCart(String name, String gender, String country, String product1, String product2) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
-        formPage.selectCountry("Australia");
+        formPage.selectCountry(country);
 
-        ProductPage productPage = formPage.fillForm("Melvin", "female");
-        productPage.addProductsToCart("Air Jordan 9 Retro", "Jordan 6 Rings");
+        ProductPage productPage = formPage.fillForm(name, gender);
+        productPage.addProductsToCart(product1, product2);
 
         CartPage cartPage = productPage.goToCart();
         Assert.assertEquals(cartPage.getToolbarTitle(), "Cart", "Cart title verification failed");
-        Assert.assertEquals(cartPage.getProductsInCartByIndex(0), "Air Jordan 9 Retro");
-        Assert.assertEquals(cartPage.getProductsInCartByIndex(1), "Jordan 6 Rings");
+        Assert.assertEquals(cartPage.getProductsInCartByIndex(0), product1);
+        Assert.assertEquals(cartPage.getProductsInCartByIndex(1), product2);
         Assert.assertEquals(cartPage.getPurchaseAmount(), cartPage.getProductPrices(), "Purchase amounts do not match");
         cartPage.goToTermsAndConditions();
         Assert.assertEquals(cartPage.getAlertTitle(), "Terms Of Conditions");
         cartPage.closeAlert();
         cartPage.acceptTermsAndConditions();
         cartPage.goToCheckout();
-
         Thread.sleep(6000);
     }
 
-    @Test
-    public void PurchaseProductHybrid() throws InterruptedException {
+    @Test(dataProvider = "getProductsData", dataProviderClass = TestData.class)
+    @Story("Add multiple products to Cart and check against the total cart amount")
+    public void PurchaseProductHybrid(String name, String gender, String country) throws InterruptedException {
         Assert.assertTrue(formPage.toolbarTitleDisplayed(), "Toolbar title is not displayed");
-        formPage.selectCountry("Austria");
+        formPage.selectCountry(country);
 
-        ProductPage productPage = formPage.fillForm("Melvin", "female");
+        ProductPage productPage = formPage.fillForm(name, gender);
         productPage.addProductsToCart("Air Jordan 9 Retro", "Jordan 6 Rings");
 
         CartPage cartPage = productPage.goToCart();

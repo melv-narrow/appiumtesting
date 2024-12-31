@@ -1,6 +1,9 @@
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
+import java.util.Properties;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -8,7 +11,9 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -25,20 +30,38 @@ public class BaseTest {
     public AndroidDriver driver;
     public AppiumDriverLocalService service;
     public FormPage formPage;
+    public Properties prop;
+
+    public BaseTest() {
+        try {
+            prop = new Properties();
+            FileInputStream fis = new FileInputStream(System.getProperty("user.dir") + 
+                "/src/test/java/resources/data.properties");
+            prop.load(fis);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @BeforeClass
-    public void ConfigureAppium() throws MalformedURLException {
+    public void startAppiumService() {
         // Start Appium server programmatically
         service = new AppiumServiceBuilder().withAppiumJS(new File("C:\\Users\\melvi\\AppData\\Roaming\\npm\\node_modules\\appium\\build\\lib\\main.js"))
-            .withIPAddress("127.0.0.1").usingPort(4723).build();
+            .withIPAddress(prop.getProperty("ipAddress"))
+            .usingPort(Integer.parseInt(prop.getProperty("port")))
+            .build();
         service.start();
+    }
 
+    @BeforeMethod
+    public void configureAppium() throws MalformedURLException {
         UiAutomator2Options options = new UiAutomator2Options();
-        options.setDeviceName("Pixel 9 Pro API 34");
+        options.setDeviceName(prop.getProperty("deviceName"));
         options.setChromedriverExecutable("C:\\Users\\melvi\\Coding Projects\\udemy-appium\\chromedriver_win32\\chromedriver.exe");
         options.setApp("C:\\Users\\melvi\\Coding Projects\\udemy-appium\\udemy-appium\\src\\main\\resources\\General-Store.apk");
         
-        driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
+        driver = new AndroidDriver(new URL("http://" + prop.getProperty("ipAddress") + ":" + prop.getProperty("port")), options);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         formPage = new FormPage(driver);
     }
 
@@ -119,9 +142,17 @@ public class BaseTest {
         ));
     }
 
-    @AfterClass
+    @AfterMethod
     public void tearDown() {
-        driver.quit();
-        service.stop();
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
+    @AfterClass
+    public void stopAppiumService() {
+        if (service != null) {
+            service.stop();
+        }
     }
 }
