@@ -143,15 +143,17 @@ public class BaseTest {
     }
 
     @AfterMethod
-    public void tearDown() {
+    public void tearDown() throws InterruptedException {
         if (driver != null) {
+            Thread.sleep(5000);
             driver.quit();
         }
     }
 
     @AfterClass
-    public void stopAppiumService() {
+    public void stopAppiumService() throws InterruptedException {
         if (service != null) {
+            Thread.sleep(5000);
             service.stop();
         }
     }
